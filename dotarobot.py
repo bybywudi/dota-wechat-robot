@@ -10,13 +10,13 @@ players = {134976802: '白杨', 194765012: '李明昊', 163287641: 'P酱', 13747
 with open("./hero_names.json",'r') as hero_names_f:
     hero_names = json.load(hero_names_f)
 
-sender = Sender(token='test')
-key = "C1117CC15AFE30841DF863B901A0D35A"
-domain = "wxdotarobot"
+sender = Sender(token='test') #wxclient sending token
+key = "C1117CC15AFE30841DF863B901A0D35A" #steam api key
+domain = "wxdotarobot" #steam api domain
 
 api = dota2api.Initialise(key)
 heroes = api.get_heroes()
-refresh_sencond = 300
+refresh_sencond = 300 #刷新玩家战绩的时间（秒）
 #match = api.get_match_details(match_id=5668508119)
 #player_matches = api.get_match_history(134976802)
 
@@ -27,6 +27,11 @@ def get_hero_by_id(id):
             return item['localized_name']
 
 def send_player_latest_game_data(id):
+    """
+    向微信发送一个玩家最近一场比赛的总结
+    :param id: 玩家id
+    :return:
+    """
     data = get_player_latest_game_data(id)
     match_res = ""
     if hero_names.get(data['hero_name']):
@@ -40,6 +45,11 @@ def send_player_latest_game_data(id):
     sender.send(str(res))
 
 def get_player_latest_game_conclusion(id):
+    """
+    获得一个玩家最近一场比赛的总结
+    :param id: 玩家id
+    :return:
+    """
     data = get_player_latest_game_data(id)
     match_res = ""
     if hero_names.get(data['hero_name']):
@@ -56,6 +66,11 @@ def get_player_name_by_id(id):
     return players[id]
 
 def get_player_latest_game_data(id):
+    """
+    生成一个玩家最近一场比赛的具体数据
+    :param id: 玩家id
+    :return:
+    """
     data = {}
     data['order'] = 1
     data['has_by'] = False
@@ -163,11 +178,22 @@ def get_player_latest_game_data(id):
 
 
 def get_player_latest_match(id):
+    """
+    获得玩家最近一场比赛的细节
+    :param id: 玩家id
+    :return: 比赛细节数据
+    """
     latest_matches = api.get_match_history(id)
     for m in latest_matches['matches']:
         return api.get_match_details(match_id=m['match_id'])
 
 def get_player_latest_days_match(id, date):
+    """
+    获得一个玩家最近几天比赛的粗略数据
+    :param id: 玩家id
+    :param date: 天数
+    :return:
+    """
     rsp = requests.get("https://api.opendota.com/api/players/" + str(id) + "/matches?api_key=" + key + "&date=" + str(date))
     if rsp.status_code == 200:
         rspJson = json.loads(rsp.text)
@@ -176,6 +202,11 @@ def get_player_latest_days_match(id, date):
         return -1
 
 def get_all_player_latest_days_match(date):
+    """
+    获得所有玩家最近几天比赛的粗略数据
+    :param date: 天数
+    :return:
+    """
     s = requests.Session()
     data = {}
     for p in players.keys():
@@ -188,6 +219,11 @@ def get_all_player_latest_days_match(date):
     return data
 
 def get_match_conclusion(mdata):
+    """
+    获得一场比赛的KDA评价
+    :param mdata: 通过get_player_latest_game_data方法获取
+    :return:
+    """
     kda = (mdata['kills'] + mdata['assists']) / mdata['deaths']
     if mdata['win'] == 1:
         if kda >= 6:
@@ -215,6 +251,11 @@ def get_match_conclusion(mdata):
         return "难以形容"
 
 def get_match_detail_conclusion(mdata):
+    """
+    获取比赛总结
+    :param mdata: 通过get_player_latest_game_data方法获取
+    :return:
+    """
     kda = (mdata['kills'] + mdata['assists']) / mdata['deaths']
     gmp_damage_rate = mdata['hero_damage_rate'] / mdata['gpm']
     total_c = ""
@@ -325,6 +366,10 @@ def get_match_detail_conclusion(mdata):
     return total_c
 
 def print_conclusions():
+    """
+    打印所有的玩家最近比赛的总结
+    :return:
+    """
     for p in players.keys():
         try:
             print(get_player_latest_game_conclusion(p))
@@ -333,6 +378,10 @@ def print_conclusions():
             pass
 
 def send_all_conclusions():
+    """
+    发送所有的玩家最近比赛的总结
+    :return:
+    """
     for p in players.keys():
         try:
             print("sending:" + str(p))
@@ -341,6 +390,10 @@ def send_all_conclusions():
             pass
 
 def get_all_weekly_conclusion():
+    """
+    获得所有的每周总结
+    :return:
+    """
     data = get_all_player_latest_days_match(7)
     #data = {397440385: [{'kills': 3, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 18, 'duration': 2108, 'game_mode': 22, 'deaths': 3, 'hero_id': 84, 'start_time': 1603635616, 'match_id': 5671723688, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 131}, {'kills': 1, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 18, 'duration': 2890, 'game_mode': 3, 'deaths': 13, 'hero_id': 20, 'start_time': 1603623265, 'match_id': 5671412804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 128}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 1736, 'game_mode': 3, 'deaths': 12, 'hero_id': 26, 'start_time': 1603621266, 'match_id': 5671371804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 128}, {'kills': 2, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 12, 'duration': 2609, 'game_mode': 3, 'deaths': 14, 'hero_id': 74, 'start_time': 1603617321, 'match_id': 5671293405, 'skill': 3, 'party_size': 5, 'lobby_type': 0, 'player_slot': 3}], 134976802: [{'kills': 11, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2609, 'game_mode': 3, 'deaths': 12, 'hero_id': 67, 'start_time': 1603617321, 'match_id': 5671293405, 'skill': 3, 'party_size': 5, 'lobby_type': 0, 'player_slot': 0}, {'kills': 10, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 19, 'duration': 2689, 'game_mode': 3, 'deaths': 8, 'hero_id': 39, 'start_time': 1603614268, 'match_id': 5671231312, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 128}, {'kills': 13, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 14, 'duration': 2219, 'game_mode': 3, 'deaths': 7, 'hero_id': 4, 'start_time': 1603611729, 'match_id': 5671181448, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 0}, {'kills': 7, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 10, 'duration': 2069, 'game_mode': 3, 'deaths': 3, 'hero_id': 35, 'start_time': 1603609106, 'match_id': 5671132518, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 128}, {'kills': 7, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 16, 'duration': 2549, 'game_mode': 3, 'deaths': 6, 'hero_id': 80, 'start_time': 1603606226, 'match_id': 5671083310, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 5, 'duration': 1957, 'game_mode': 22, 'deaths': 8, 'hero_id': 18, 'start_time': 1603603893, 'match_id': 5671045176, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 12, 'duration': 2157, 'game_mode': 22, 'deaths': 10, 'hero_id': 67, 'start_time': 1603557507, 'match_id': 5670366377, 'skill': 2, 'party_size': 2, 'lobby_type': 7, 'player_slot': 128}, {'kills': 6, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 10, 'duration': 1993, 'game_mode': 3, 'deaths': 4, 'hero_id': 18, 'start_time': 1603457167, 'match_id': 5668508119, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 2}, {'kills': 22, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 3312, 'game_mode': 22, 'deaths': 7, 'hero_id': 1, 'start_time': 1603453536, 'match_id': 5668429796, 'skill': None, 'party_size': 3, 'lobby_type': 0, 'player_slot': 128}, {'kills': 5, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 2443, 'game_mode': 3, 'deaths': 5, 'hero_id': 17, 'start_time': 1603450807, 'match_id': 5668379038, 'skill': 1, 'party_size': 2, 'lobby_type': 0, 'player_slot': 130}, {'kills': 0, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 9, 'duration': 2066, 'game_mode': 22, 'deaths': 5, 'hero_id': 67, 'start_time': 1603372754, 'match_id': 5667244405, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 1}, {'kills': 7, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 14, 'duration': 2242, 'game_mode': 22, 'deaths': 6, 'hero_id': 15, 'start_time': 1603370216, 'match_id': 5667185677, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 9, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 16, 'duration': 2492, 'game_mode': 3, 'deaths': 3, 'hero_id': 67, 'start_time': 1603287623, 'match_id': 5665997247, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 129}, {'kills': 5, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 5, 'duration': 2203, 'game_mode': 22, 'deaths': 7, 'hero_id': 35, 'start_time': 1603285019, 'match_id': 5665934233, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 7, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2365, 'game_mode': 3, 'deaths': 8, 'hero_id': 8, 'start_time': 1603282200, 'match_id': 5665871925, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 1}, {'kills': 20, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 16, 'duration': 2227, 'game_mode': 3, 'deaths': 6, 'hero_id': 18, 'start_time': 1603279511, 'match_id': 5665819348, 'skill': 2, 'party_size': 2, 'lobby_type': 0, 'player_slot': 130}, {'kills': 6, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2165, 'game_mode': 3, 'deaths': 8, 'hero_id': 95, 'start_time': 1603200635, 'match_id': 5664716019, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 2}, {'kills': 2, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 1, 'duration': 1611, 'game_mode': 3, 'deaths': 7, 'hero_id': 29, 'start_time': 1603198550, 'match_id': 5664666121, 'skill': 3, 'party_size': 4, 'lobby_type': 0, 'player_slot': 129}, {'kills': 6, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 18, 'duration': 4008, 'game_mode': 3, 'deaths': 13, 'hero_id': 51, 'start_time': 1603193697, 'match_id': 5664564743, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 128}, {'kills': 10, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 3050, 'game_mode': 22, 'deaths': 3, 'hero_id': 1, 'start_time': 1603189742, 'match_id': 5664497236, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 2853, 'game_mode': 3, 'deaths': 8, 'hero_id': 35, 'start_time': 1603186396, 'match_id': 5664447496, 'skill': 1, 'party_size': 2, 'lobby_type': 0, 'player_slot': 128}, {'kills': 8, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2130, 'game_mode': 22, 'deaths': 4, 'hero_id': 18, 'start_time': 1603112839, 'match_id': 5663403386, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 131}, {'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 15, 'duration': 2228, 'game_mode': 22, 'deaths': 7, 'hero_id': 30, 'start_time': 1603110290, 'match_id': 5663344042, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 4}], 135885299: [{'kills': 14, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 15, 'duration': 2108, 'game_mode': 22, 'deaths': 3, 'hero_id': 25, 'start_time': 1603635616, 'match_id': 5671723688, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 7, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2488, 'game_mode': 3, 'deaths': 10, 'hero_id': 47, 'start_time': 1603632522, 'match_id': 5671638162, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 128}, {'kills': 7, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 2890, 'game_mode': 3, 'deaths': 12, 'hero_id': 2, 'start_time': 1603623265, 'match_id': 5671412804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 129}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 1736, 'game_mode': 3, 'deaths': 8, 'hero_id': 28, 'start_time': 1603621266, 'match_id': 5671371804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 129}, {'kills': 2, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 9, 'duration': 2609, 'game_mode': 3, 'deaths': 11, 'hero_id': 129, 'start_time': 1603617321, 'match_id': 5671293405, 'skill': 3, 'party_size': 5, 'lobby_type': 0, 'player_slot': 1}, {'kills': 7, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 23, 'duration': 2689, 'game_mode': 3, 'deaths': 5, 'hero_id': 42, 'start_time': 1603614268, 'match_id': 5671231312, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 129}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 21, 'duration': 2219, 'game_mode': 3, 'deaths': 5, 'hero_id': 108, 'start_time': 1603611729, 'match_id': 5671181448, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 1}, {'kills': 5, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 2069, 'game_mode': 3, 'deaths': 5, 'hero_id': 28, 'start_time': 1603609106, 'match_id': 5671132518, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 5, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 21, 'duration': 2549, 'game_mode': 3, 'deaths': 9, 'hero_id': 14, 'start_time': 1603606226, 'match_id': 5671083310, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 8, 'duration': 1957, 'game_mode': 22, 'deaths': 9, 'hero_id': 15, 'start_time': 1603603893, 'match_id': 5671045176, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}], 194765012: [{'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 20, 'duration': 2890, 'game_mode': 3, 'deaths': 12, 'hero_id': 71, 'start_time': 1603623265, 'match_id': 5671412804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 132}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 1736, 'game_mode': 3, 'deaths': 9, 'hero_id': 7, 'start_time': 1603621266, 'match_id': 5671371804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 132}, {'kills': 1, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 12, 'duration': 2609, 'game_mode': 3, 'deaths': 11, 'hero_id': 106, 'start_time': 1603617321, 'match_id': 5671293405, 'skill': 3, 'party_size': 5, 'lobby_type': 0, 'player_slot': 4}, {'kills': 1, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 8, 'duration': 2689, 'game_mode': 3, 'deaths': 9, 'hero_id': 13, 'start_time': 1603614268, 'match_id': 5671231312, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 132}, {'kills': 5, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 28, 'duration': 3804, 'game_mode': 22, 'deaths': 8, 'hero_id': 110, 'start_time': 1603459769, 'match_id': 5668570685, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 15, 'duration': 1993, 'game_mode': 3, 'deaths': 6, 'hero_id': 7, 'start_time': 1603457167, 'match_id': 5668508119, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 3}, {'kills': 5, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 19, 'duration': 3312, 'game_mode': 22, 'deaths': 17, 'hero_id': 88, 'start_time': 1603453536, 'match_id': 5668429796, 'skill': None, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 3, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 2443, 'game_mode': 3, 'deaths': 8, 'hero_id': 19, 'start_time': 1603450807, 'match_id': 5668379038, 'skill': 1, 'party_size': 2, 'lobby_type': 0, 'player_slot': 131}, {'kills': 4, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 1, 'duration': 2066, 'game_mode': 22, 'deaths': 7, 'hero_id': 62, 'start_time': 1603372754, 'match_id': 5667244405, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 3}, {'kills': 4, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 20, 'duration': 2242, 'game_mode': 22, 'deaths': 4, 'hero_id': 88, 'start_time': 1603370216, 'match_id': 5667185677, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 132}, {'kills': 2, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 20, 'duration': 2492, 'game_mode': 3, 'deaths': 7, 'hero_id': 9, 'start_time': 1603287623, 'match_id': 5665997247, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 130}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 2203, 'game_mode': 22, 'deaths': 8, 'hero_id': 90, 'start_time': 1603285019, 'match_id': 5665934233, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 11, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 3, 'duration': 2365, 'game_mode': 3, 'deaths': 9, 'hero_id': 25, 'start_time': 1603282200, 'match_id': 5665871925, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 2}, {'kills': 1, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 3, 'duration': 1611, 'game_mode': 3, 'deaths': 9, 'hero_id': 7, 'start_time': 1603198550, 'match_id': 5664666121, 'skill': 3, 'party_size': 4, 'lobby_type': 0, 'player_slot': 130}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 4008, 'game_mode': 3, 'deaths': 13, 'hero_id': 13, 'start_time': 1603193697, 'match_id': 5664564743, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 129}, {'kills': 4, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 3050, 'game_mode': 22, 'deaths': 5, 'hero_id': 45, 'start_time': 1603189742, 'match_id': 5664497236, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 1, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2853, 'game_mode': 3, 'deaths': 10, 'hero_id': 13, 'start_time': 1603186396, 'match_id': 5664447496, 'skill': 1, 'party_size': 2, 'lobby_type': 0, 'player_slot': 129}, {'kills': 8, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 20, 'duration': 2130, 'game_mode': 22, 'deaths': 8, 'hero_id': 9, 'start_time': 1603112839, 'match_id': 5663403386, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 130}, {'kills': 2, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 2228, 'game_mode': 22, 'deaths': 10, 'hero_id': 7, 'start_time': 1603110290, 'match_id': 5663344042, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 3}, {'kills': 3, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2518, 'game_mode': 3, 'deaths': 8, 'hero_id': 83, 'start_time': 1603107012, 'match_id': 5663277198, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 2}, {'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 7, 'duration': 2801, 'game_mode': 22, 'deaths': 6, 'hero_id': 54, 'start_time': 1603099717, 'match_id': 5663160703, 'skill': 1, 'party_size': 1, 'lobby_type': 0, 'player_slot': 132}], 163338929: [], 142874459: [{'kills': 14, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 2890, 'game_mode': 3, 'deaths': 7, 'hero_id': 35, 'start_time': 1603623265, 'match_id': 5671412804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 130}, {'kills': 5, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 8, 'duration': 1736, 'game_mode': 3, 'deaths': 10, 'hero_id': 15, 'start_time': 1603621266, 'match_id': 5671371804, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 130}, {'kills': 5, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 9, 'duration': 2609, 'game_mode': 3, 'deaths': 11, 'hero_id': 47, 'start_time': 1603617321, 'match_id': 5671293405, 'skill': 3, 'party_size': 5, 'lobby_type': 0, 'player_slot': 2}, {'kills': 10, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 8, 'duration': 2689, 'game_mode': 3, 'deaths': 7, 'hero_id': 44, 'start_time': 1603614268, 'match_id': 5671231312, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 130}, {'kills': 11, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 2219, 'game_mode': 3, 'deaths': 3, 'hero_id': 35, 'start_time': 1603611729, 'match_id': 5671181448, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 2}, {'kills': 1, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 24, 'duration': 3804, 'game_mode': 22, 'deaths': 6, 'hero_id': 29, 'start_time': 1603459769, 'match_id': 5668570685, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 129}, {'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 1993, 'game_mode': 3, 'deaths': 5, 'hero_id': 15, 'start_time': 1603457167, 'match_id': 5668508119, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 4}, {'kills': 8, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 29, 'duration': 3312, 'game_mode': 22, 'deaths': 13, 'hero_id': 108, 'start_time': 1603453536, 'match_id': 5668429796, 'skill': None, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 10, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 10, 'duration': 1984, 'game_mode': 22, 'deaths': 4, 'hero_id': 2, 'start_time': 1603375483, 'match_id': 5667313190, 'skill': 1, 'party_size': 1, 'lobby_type': 0, 'player_slot': 130}, {'kills': 3, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 22, 'duration': 2492, 'game_mode': 3, 'deaths': 4, 'hero_id': 108, 'start_time': 1603287623, 'match_id': 5665997247, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 128}, {'kills': 1, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 2203, 'game_mode': 22, 'deaths': 9, 'hero_id': 108, 'start_time': 1603285019, 'match_id': 5665934233, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 128}, {'kills': 3, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 14, 'duration': 2365, 'game_mode': 3, 'deaths': 15, 'hero_id': 31, 'start_time': 1603282200, 'match_id': 5665871925, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 0}, {'kills': 5, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 29, 'duration': 2227, 'game_mode': 3, 'deaths': 9, 'hero_id': 5, 'start_time': 1603279511, 'match_id': 5665819348, 'skill': 2, 'party_size': 2, 'lobby_type': 0, 'player_slot': 129}, {'kills': 6, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 16, 'duration': 2130, 'game_mode': 22, 'deaths': 5, 'hero_id': 5, 'start_time': 1603112839, 'match_id': 5663403386, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 129}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 24, 'duration': 2228, 'game_mode': 22, 'deaths': 2, 'hero_id': 108, 'start_time': 1603110290, 'match_id': 5663344042, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 2}, {'kills': 2, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 9, 'duration': 2518, 'game_mode': 3, 'deaths': 4, 'hero_id': 45, 'start_time': 1603107012, 'match_id': 5663277198, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 1}], 163287641: [{'kills': 18, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 2463, 'game_mode': 22, 'deaths': 6, 'hero_id': 28, 'start_time': 1603207905, 'match_id': 5664894454, 'skill': 2, 'party_size': 2, 'lobby_type': 7, 'player_slot': 3}, {'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 1430, 'game_mode': 22, 'deaths': 0, 'hero_id': 97, 'start_time': 1603205680, 'match_id': 5664842367, 'skill': 2, 'party_size': 2, 'lobby_type': 7, 'player_slot': 2}, {'kills': 11, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 5, 'duration': 2165, 'game_mode': 3, 'deaths': 11, 'hero_id': 101, 'start_time': 1603200635, 'match_id': 5664716019, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 4}, {'kills': 0, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 1, 'duration': 1611, 'game_mode': 3, 'deaths': 6, 'hero_id': 126, 'start_time': 1603198550, 'match_id': 5664666121, 'skill': 3, 'party_size': 4, 'lobby_type': 0, 'player_slot': 131}, {'kills': 18, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 4008, 'game_mode': 3, 'deaths': 11, 'hero_id': 21, 'start_time': 1603193697, 'match_id': 5664564743, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 130}, {'kills': 12, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 12, 'duration': 3050, 'game_mode': 22, 'deaths': 7, 'hero_id': 28, 'start_time': 1603189742, 'match_id': 5664497236, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 131}, {'kills': 14, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 15, 'duration': 2361, 'game_mode': 22, 'deaths': 4, 'hero_id': 21, 'start_time': 1603120478, 'match_id': 5663594060, 'skill': 2, 'party_size': 2, 'lobby_type': 7, 'player_slot': 128}, {'kills': 14, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 2130, 'game_mode': 22, 'deaths': 5, 'hero_id': 97, 'start_time': 1603112839, 'match_id': 5663403386, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 128}, {'kills': 13, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 2228, 'game_mode': 22, 'deaths': 5, 'hero_id': 28, 'start_time': 1603110290, 'match_id': 5663344042, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 1}, {'kills': 11, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 5, 'duration': 2518, 'game_mode': 3, 'deaths': 8, 'hero_id': 21, 'start_time': 1603107012, 'match_id': 5663277198, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 0}], 144128282: [{'kills': 9, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 15, 'duration': 2689, 'game_mode': 3, 'deaths': 14, 'hero_id': 62, 'start_time': 1603614268, 'match_id': 5671231312, 'skill': 2, 'party_size': 5, 'lobby_type': 0, 'player_slot': 131}, {'kills': 4, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 23, 'duration': 2219, 'game_mode': 3, 'deaths': 6, 'hero_id': 30, 'start_time': 1603611729, 'match_id': 5671181448, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 3}, {'kills': 7, 'radiant_win': False, 'version': None, 'leaver_status': 1, 'assists': 9, 'duration': 2069, 'game_mode': 3, 'deaths': 7, 'hero_id': 22, 'start_time': 1603609106, 'match_id': 5671132518, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 20, 'duration': 2549, 'game_mode': 3, 'deaths': 10, 'hero_id': 5, 'start_time': 1603606226, 'match_id': 5671083310, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 131}, {'kills': 5, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 7, 'duration': 1957, 'game_mode': 22, 'deaths': 9, 'hero_id': 58, 'start_time': 1603603893, 'match_id': 5671045176, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 131}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 15, 'duration': 2157, 'game_mode': 22, 'deaths': 17, 'hero_id': 84, 'start_time': 1603557507, 'match_id': 5670366377, 'skill': 2, 'party_size': 2, 'lobby_type': 7, 'player_slot': 129}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 5, 'duration': 1651, 'game_mode': 3, 'deaths': 6, 'hero_id': 99, 'start_time': 1603550716, 'match_id': 5670188565, 'skill': 1, 'party_size': 3, 'lobby_type': 0, 'player_slot': 3}, {'kills': 7, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 13, 'duration': 3477, 'game_mode': 3, 'deaths': 14, 'hero_id': 119, 'start_time': 1603546871, 'match_id': 5670081324, 'skill': None, 'party_size': 4, 'lobby_type': 0, 'player_slot': 2}], 189119223: [{'kills': 21, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 14, 'duration': 2216, 'game_mode': 3, 'deaths': 2, 'hero_id': 44, 'start_time': 1603630468, 'match_id': 5671582696, 'skill': 2, 'party_size': 3, 'lobby_type': 7, 'player_slot': 2}, {'kills': 9, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 7, 'duration': 2454, 'game_mode': 22, 'deaths': 8, 'hero_id': 48, 'start_time': 1603627736, 'match_id': 5671513277, 'skill': 2, 'party_size': 3, 'lobby_type': 7, 'player_slot': 2}, {'kills': 3, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 1549, 'game_mode': 3, 'deaths': 9, 'hero_id': 56, 'start_time': 1603625918, 'match_id': 5671470430, 'skill': 1, 'party_size': 3, 'lobby_type': 7, 'player_slot': 0}, {'kills': 16, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 18, 'duration': 2482, 'game_mode': 3, 'deaths': 4, 'hero_id': 39, 'start_time': 1603547392, 'match_id': 5670096098, 'skill': 1, 'party_size': 4, 'lobby_type': 0, 'player_slot': 1}, {'kills': 25, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 16, 'duration': 2948, 'game_mode': 3, 'deaths': 4, 'hero_id': 63, 'start_time': 1603544172, 'match_id': 5670009397, 'skill': None, 'party_size': 4, 'lobby_type': 0, 'player_slot': 1}, {'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 3, 'duration': 2038, 'game_mode': 3, 'deaths': 11, 'hero_id': 99, 'start_time': 1603541788, 'match_id': 5669950547, 'skill': 1, 'party_size': 4, 'lobby_type': 0, 'player_slot': 129}, {'kills': 12, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 23, 'duration': 2562, 'game_mode': 22, 'deaths': 2, 'hero_id': 56, 'start_time': 1603526613, 'match_id': 5669652165, 'skill': 2, 'party_size': 1, 'lobby_type': 7, 'player_slot': 3}, {'kills': 2, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 5, 'duration': 1903, 'game_mode': 3, 'deaths': 5, 'hero_id': 44, 'start_time': 1603524299, 'match_id': 5669611175, 'skill': 2, 'party_size': 1, 'lobby_type': 7, 'player_slot': 130}, {'kills': 7, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 10, 'duration': 2310, 'game_mode': 22, 'deaths': 4, 'hero_id': 8, 'start_time': 1603521250, 'match_id': 5669560868, 'skill': 3, 'party_size': 1, 'lobby_type': 7, 'player_slot': 130}, {'kills': 21, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 16, 'duration': 4030, 'game_mode': 3, 'deaths': 8, 'hero_id': 44, 'start_time': 1603506945, 'match_id': 5669360433, 'skill': 3, 'party_size': 1, 'lobby_type': 7, 'player_slot': 1}, {'kills': 2, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 8, 'duration': 2416, 'game_mode': 22, 'deaths': 7, 'hero_id': 84, 'start_time': 1603504107, 'match_id': 5669327200, 'skill': 3, 'party_size': 1, 'lobby_type': 7, 'player_slot': 131}, {'kills': 18, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 12, 'duration': 3804, 'game_mode': 22, 'deaths': 6, 'hero_id': 39, 'start_time': 1603459769, 'match_id': 5668570685, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 131}, {'kills': 4, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 7, 'duration': 2066, 'game_mode': 22, 'deaths': 9, 'hero_id': 40, 'start_time': 1603372754, 'match_id': 5667244405, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 2}, {'kills': 1, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 17, 'duration': 2242, 'game_mode': 22, 'deaths': 5, 'hero_id': 84, 'start_time': 1603370216, 'match_id': 5667185677, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 131}, {'kills': 11, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 14, 'duration': 2492, 'game_mode': 3, 'deaths': 3, 'hero_id': 39, 'start_time': 1603287623, 'match_id': 5665997247, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 131}, {'kills': 7, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 14, 'duration': 1767, 'game_mode': 3, 'deaths': 1, 'hero_id': 63, 'start_time': 1603242570, 'match_id': 5665372140, 'skill': 2, 'party_size': 1, 'lobby_type': 7, 'player_slot': 130}, {'kills': 4, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 2165, 'game_mode': 3, 'deaths': 10, 'hero_id': 14, 'start_time': 1603200635, 'match_id': 5664716019, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 3}, {'kills': 2, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 1, 'duration': 1611, 'game_mode': 3, 'deaths': 8, 'hero_id': 83, 'start_time': 1603198550, 'match_id': 5664666121, 'skill': 3, 'party_size': 4, 'lobby_type': 0, 'player_slot': 132}], 307998042: [{'kills': 3, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 9, 'duration': 2488, 'game_mode': 3, 'deaths': 10, 'hero_id': 101, 'start_time': 1603632522, 'match_id': 5671638162, 'skill': 2, 'party_size': 3, 'lobby_type': 0, 'player_slot': 130}, {'kills': 4, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 6, 'duration': 1896, 'game_mode': 22, 'deaths': 1, 'hero_id': 94, 'start_time': 1603629998, 'match_id': 5671569914, 'skill': 1, 'party_size': 1, 'lobby_type': 7, 'player_slot': 131}, {'kills': 23, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 11, 'duration': 3541, 'game_mode': 22, 'deaths': 7, 'hero_id': 35, 'start_time': 1603274519, 'match_id': 5665738711, 'skill': 1, 'party_size': 1, 'lobby_type': 7, 'player_slot': 128}, {'kills': 2, 'radiant_win': True, 'version': None, 'leaver_status': 0, 'assists': 23, 'duration': 4008, 'game_mode': 3, 'deaths': 13, 'hero_id': 75, 'start_time': 1603193697, 'match_id': 5664564743, 'skill': 2, 'party_size': 4, 'lobby_type': 0, 'player_slot': 131}], 137479998: [{'kills': 10, 'radiant_win': False, 'version': None, 'leaver_status': 0, 'assists': 27, 'duration': 2108, 'game_mode': 22, 'deaths': 5, 'hero_id': 16, 'start_time': 1603635616, 'match_id': 5671723688, 'skill': 3, 'party_size': 3, 'lobby_type': 0, 'player_slot': 132}]}
     duration_conclusion = get_weekly_duration_conclusion(data)
@@ -355,6 +408,10 @@ def get_all_weekly_conclusion():
     print(str(assist_conclusion))
 
 def send_all_weekly_conclusion():
+    """
+    发送所有的每周总结
+    :return:
+    """
     data = get_all_player_latest_days_match(7)
     duration_conclusion = get_weekly_duration_conclusion(data)
     try:
@@ -383,6 +440,11 @@ def send_all_weekly_conclusion():
         pass
 
 def get_weekly_duration_conclusion(data):
+    """
+    获取每周的游戏时间排行榜
+    :param data: 通过get_player_latest_game_data获取
+    :return:
+    """
     res = {}
     conclusion = "本周天道酬勤榜（加速模式不算）==========================="
     for k,v in data.items():
@@ -401,6 +463,11 @@ def get_weekly_duration_conclusion(data):
     return conclusion
 
 def get_weekly_kill_conclusion(data):
+    """
+    获取每周的击杀排行榜
+    :param data: 通过get_player_latest_game_data获取
+    :return:
+    """
     res = {}
     conclusion = "本周场均击杀榜（加速模式不算，少于5场不算）=================="
     top1_player = 0
@@ -425,6 +492,11 @@ def get_weekly_kill_conclusion(data):
     return conclusion
 
 def get_weekly_death_conclusion(data):
+    """
+    获取每周的死亡排行榜
+    :param data: 通过get_player_latest_game_data获取
+    :return:
+    """
     res = {}
     conclusion = "本周场均死亡榜（加速模式不算，少于5场不算）=================="
     top1_player = 0
@@ -450,6 +522,11 @@ def get_weekly_death_conclusion(data):
     return conclusion
 
 def get_weekly_assistant_conclusion(data):
+    """
+    获取每周的助攻排行榜
+    :param data: 通过get_player_latest_game_data获取
+    :return:
+    """
     res = {}
     conclusion = "本周场均助攻榜（加速模式不算，少于5场不算）=================="
     top1_player = 0
@@ -475,6 +552,12 @@ def get_weekly_assistant_conclusion(data):
     return conclusion
 
 def getWL(id, date):
+    """
+    返回指定玩家最近几天的胜负数量
+    :param id: 玩家id
+    :param date: 天数
+    :return: 胜负数量
+    """
     rsp = requests.get("https://api.opendota.com/api/players/" + str(id) + "/wl?api_key=" + key + "&date=" + str(date))
     if rsp.status_code == 200:
         rspJson = json.loads(rsp.text)
@@ -482,7 +565,13 @@ def getWL(id, date):
     else:
         return -1
 
+
 def get_all_player_latest_days_wl(date):
+    """
+    返回所有玩家最近几天的胜负数量
+    :param date: 天数
+    :return: 胜负数量
+    """
     s = requests.Session()
     data = {}
     for p in players.keys():
@@ -494,6 +583,7 @@ def get_all_player_latest_days_wl(date):
             print("error")
     return data
 
+#获得胜率榜结论
 def get_weekly_wl_conclusion():
     data = get_all_player_latest_days_wl(7)
     conclusion = "本周胜率榜（至少5场才算）==========================="
@@ -510,6 +600,7 @@ def get_weekly_wl_conclusion():
         i = i + 1
     return conclusion
 
+#主要逻辑部分，判定每个玩家的比赛有没有被发送过，如果没有，则发送后更新最近发送的比赛id
 with open("./players_latest_match_ids.json",'r') as load_f:
     players_latest_match_ids = json.load(load_f)
 scan_time = 0
@@ -522,7 +613,7 @@ while True:
             if data['match_id'] != players_latest_match_ids[str(p)]:
                 players_latest_match_ids[str(p)] = data['match_id']
                 sender.send(res)
-                print("sending" + str(p))
+                print("sending" + str(res))
             # if int(time.time()) - data['endtime'] <= refresh_sencond:
             #     print("sending" + str(p))
             #     send_player_latest_game_data(p)
@@ -532,6 +623,6 @@ while True:
         json.dump(players_latest_match_ids, dump_f)
     time.sleep(refresh_sencond)
 
-embed()
+#embed()
 #sender.send(match)
 
