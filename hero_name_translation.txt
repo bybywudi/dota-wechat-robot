@@ -1,0 +1,368 @@
+﻿{'Axe':'斧王',
+'Bane':'祸乱之源',
+'Bloodseeker':'血魔',
+'Crystal Maiden':'冰晶室女',
+'Drow Ranger':'黑暗游侠',
+'Earthshaker':'撼地神牛',
+'Juggernaut':'主宰',
+'Mirana':'米拉娜',
+'Shadow Fiend':'影魔',
+'Morphling':'变体精灵',
+'Phantom Lancer':'幻影长矛手',
+'Puck':'帕克',
+'Pudge':'屠夫',
+'Razor
+':'电棍',
+'Sand King':'沙王',
+'Storm Spirit':'风暴之灵',
+'Sven':'斯温',
+'Tiny':'小小',
+'Vengeful Spirit':'复仇之魂',
+'Windranger
+':'冰龙',
+'Zeus':'宙斯',
+'Kunkka':'昆卡',
+'Lina':'莉娜',
+'Lich':'巫妖',
+'Lion
+':'莱恩',
+'Shadow Shaman':'暗影萨满',
+'Slardar':'斯拉达',
+'Tidehunter':'潮汐',
+'Witch Doctor':'巫医',
+'Riki':'隐刺',
+'Enigma
+':'谜团',
+'Tinker
+':'修补匠',
+'Sniper':'火枪',
+'Necrophos':'瘟疫法师',
+'Warlock':'术士',
+'Beastmaster':'兽王',
+'
+Queen of Pain
+':'痛苦女王',
+'Venomancer':'剧毒术士',
+'Faceless Void':'虚空假面',
+'Wraith King':'冥魂大帝',
+'Death Prophet':'死亡先知',
+'Phantom Assassin':'幻影刺客',
+'Pugna':'帕格纳',
+'Templar Assassin':'圣堂刺客',
+'Viper':'冥界亚龙',
+'Luna
+':'露娜',
+'Dragon Knight':'龙骑士',
+'Dazzle':'戴泽',
+'Clockwerk':'发条地精',
+'Leshrac
+':'拉席克',
+'Nature's Prophet':'先知',
+'Lifestealer
+':'小狗',
+'Dark Seer
+':'兔子',
+'Clinkz':'小骷髅',
+'Omniknight':'全能骑士',
+'Enchantress':'小鹿',
+'Huskar':'哈斯卡',
+'Night Stalker':'暗夜魔王',
+'Broodmother':'育母蜘蛛',
+'Bounty Hunter':'赏金猎人',
+'Weaver':'蚂蚁',
+'Jakiro':'双头龙',
+'Batrider':'蝙蝠骑士',
+'Chen':'陈',
+'Spectre':'幽鬼',
+'Doom
+':'末日',
+'Ancient Apparition':'远古冰魂',
+'Ursa':'拍拍熊',
+'Spirit Breaker':'裂魂人',
+'Gyrocopter':'矮人直升机',
+'Alchemist':'炼金术士',
+'Invoker':'卡尔',
+'Silencer':'沉默术士',
+'Outworld Devourer':'黑鸟',
+'Lycan':'狼人',
+'Brewmaster':'熊猫酒仙',
+'Shadow Demon':'暗影恶魔',
+'Lone Druid':'德鲁伊',
+'Chaos Knight':'混沌骑士',
+'Meepo':'米波大神',
+'Treant Protector':'树精卫士',
+'Ogre Magi':'蓝胖',
+'Undying
+':'不朽尸王',
+'Rubick':'拉比克',
+'Disruptor':'萨尔',
+'Nyx Assassin':'司夜刺客',
+'Naga Siren':'娜迦海妖',
+'Keeper of the Light':'光之守卫',
+'Io':'小精灵',
+'Visage':'死灵龙',
+'Slark':'斯拉克',
+'Medusa':'美杜莎',
+'Troll Warlord':'巨魔战将',
+'Centaur Warrunner':'半人马战士',
+'Magnus':'马格纳斯',
+'Timbersaw':'伐木机',
+'Bristleback':'钢背兽',
+'Tusk
+':'巨牙海民',
+'Skywrath Mage':'天怒法师',
+'Abaddon':'亚巴顿',
+'Elder Titan':'大牛',
+'Legion Commander':'军团指挥官',
+'Ember Spirit':'灰烬之灵',
+'Earth Spirit':'大地之灵',
+'Terrorblade':'恐怖利刃',
+'Phoenix':'凤凰',
+'Oracle':'神谕者',
+'Techies':'炸弹人',
+'Winter Wyvern':'寒冬飞龙',
+'Arc Warden':'天穹守望者',
+'Underlord':'孽主',
+'Monkey King':'齐天大圣',
+'Pangolier':'石鳞剑士',
+'Dark Willow':'邪影芳灵',
+'Grimstroke':'天涯墨客',
+'Mars':'玛尔斯',
+'Void Spirit':'虚无之灵',
+'Snapfire':'电炎绝手'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

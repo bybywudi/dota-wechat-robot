@@ -1,0 +1,11 @@
+include *.rst
+include *.py
+include *.txt
+include LICENSE
+
+recursive-include dota2api/ref *.json
+recursive-include dota2api *.py
+prune build
+prune dist
+prune docs
+prune *.egg-info
