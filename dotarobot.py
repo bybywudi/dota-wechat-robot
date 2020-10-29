@@ -88,10 +88,10 @@ def get_player_latest_game_data(id):
     match = get_player_latest_match(id)
     data['match_id'] = match['match_id']
     players = match['players']
-    dire_total_damage = 0
-    radiant_total_damage = 0
-    dire_total_tower_damage = 0
-    radiant_total_tower_damage = 0
+    dire_total_damage = 1
+    radiant_total_damage = 1
+    dire_total_tower_damage = 1
+    radiant_total_tower_damage = 1
     j = 0
     for p in players:
         j = j + 1
@@ -612,8 +612,8 @@ while True:
             res, data = get_player_latest_game_conclusion(p)
             if data['match_id'] != players_latest_match_ids[str(p)]:
                 players_latest_match_ids[str(p)] = data['match_id']
-                sender.send(res)
                 print("sending" + str(res))
+                sender.send(res)
             # if int(time.time()) - data['endtime'] <= refresh_sencond:
             #     print("sending" + str(p))
             #     send_player_latest_game_data(p)
