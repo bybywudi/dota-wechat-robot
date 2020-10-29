@@ -1,368 +1,120 @@
-﻿{'Axe':'斧王',
-'Bane':'班尼',
-'Bloodseeker':'血魔',
-'Crystal Maiden':'冰女',
-'Drow Ranger':'小黑',
-'Earthshaker':'小牛',
-'Juggernaut':'主宰',
-'Mirana':'白虎',
-'Shadow Fiend':'影魔',
-'Morphling':'水人',
-'Phantom Lancer':'幻影长矛手',
-'Puck':'帕克',
-'Pudge':'屠夫',
-'Razor
-':'电棍',
-'Sand King':'沙王',
-'Storm Spirit':'蓝猫',
-'Sven':'斯温',
-'Tiny':'小小',
-'Vengeful Spirit':'vs',
-'Windranger
-':'冰龙',
-'Zeus':'宙斯',
-'Kunkka':'船长',
-'Lina':'火女',
-'Lich':'巫妖',
-'Lion
-':'莱恩',
-'Shadow Shaman':'小Y',
-'Slardar':'大鱼',
-'Tidehunter':'潮汐',
-'Witch Doctor':'巫医',
-'Riki':'隐刺',
-'Enigma
-':'谜团',
-'Tinker
-':'修补匠',
-'Sniper':'火枪',
-'Necrophos':'死灵法',
-'Warlock':'术士',
-'Beastmaster':'兽王',
-'
-Queen of Pain
-':'女王',
-'Venomancer':'剧毒',
-'Faceless Void':'虚空',
-'Wraith King':'骷髅王',
-'Death Prophet':'死亡先知',
-'Phantom Assassin':'幻影刺客',
-'Pugna':'骨法',
-'Templar Assassin':'Ta',
-'Viper':'毒龙',
-'Luna
-':'露娜',
-'Dragon Knight':'龙骑',
-'Dazzle':'暗牧',
-'Clockwerk':'发条',
-'Leshrac
-':'拉席克',
-'Nature's Prophet':'先知',
-'Lifestealer
-':'小狗',
-'Dark Seer
-':'兔子',
-'Clinkz':'小骷髅',
-'Omniknight':'全能',
-'Enchantress':'小鹿',
-'Huskar':'哈斯卡',
-'Night Stalker':'夜魔',
-'Broodmother':'蜘蛛',
-'Bounty Hunter':'赏金',
-'Weaver':'蚂蚁',
-'Jakiro':'双头龙',
-'Batrider':'蝙蝠',
-'Chen':'陈',
-'Spectre':'幽鬼',
-'Doom
-':'末日',
-'Ancient Apparition':'冰魂',
-'Ursa':'拍拍',
-'Spirit Breaker':'白牛',
-'Gyrocopter':'飞机',
-'Alchemist':'炼金',
-'Invoker':'卡尔',
-'Silencer':'沉默',
-'Outworld Devourer':'黑鸟',
-'Lycan':'狼人',
-'Brewmaster':'熊猫',
-'Shadow Demon':'毒狗',
-'Lone Druid':'德鲁伊',
-'Chaos Knight':'混沌',
-'Meepo':'米波',
-'Treant Protector':'大树',
-'Ogre Magi':'蓝胖',
-'Undying
-':'尸王',
-'Rubick':'拉比克',
-'Disruptor':'萨尔',
-'Nyx Assassin':'小强',
-'Naga Siren':'小娜迦',
-'Keeper of the Light':'光法',
-'Io':'小精灵',
-'Visage':'死灵龙',
-'Slark':'小鱼人',
-'Medusa':'大娜迦',
-'Troll Warlord':'巨魔',
-'Centaur Warrunner':'人马',
-'Magnus':'猛犸',
-'Timbersaw':'伐木机',
-'Bristleback':'钢背',
-'Tusk
-':'海民',
-'Skywrath Mage':'天怒',
-'Abaddon':'亚巴顿',
-'Elder Titan':'大牛',
-'Legion Commander':'军团',
-'Ember Spirit':'火猫',
-'Earth Spirit':'土猫',
-'Terrorblade':'Tb',
-'Phoenix':'凤凰',
-'Oracle':'神谕',
-'Techies':'炸弹人',
-'Winter Wyvern':'寒冬飞龙',
-'Arc Warden':'电狗',
-'Underlord':'大屁股',
-'Monkey King':'大圣',
-'Pangolier':'滚滚',
-'Dark Willow':'花仙子',
-'Grimstroke':'墨客',
-'Mars':'玛尔斯',
-'Void Spirit':'紫猫',
-'Snapfire':'老奶奶'}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{
+  "Axe": "斧王",
+  "Bane": "班尼",
+  "Bloodseeker": "血魔",
+  "Crystal Maiden": "冰女",
+  "Drow Ranger": "小黑",
+  "Earthshaker": "小牛",
+  "Juggernaut": "主宰",
+  "Mirana": "白虎",
+  "Shadow Fiend": "影魔",
+  "Morphling": "水人",
+  "Phantom Lancer": "幻影长矛手",
+  "Puck": "帕克",
+  "Pudge": "屠夫",
+  "Razor": "电棍",
+  "Sand King": "沙王",
+  "Storm Spirit": "蓝猫",
+  "Sven": "斯温",
+  "Tiny": "小小",
+  "Vengeful Spirit": "vs",
+  "Windranger": "冰龙",
+  "Zeus": "宙斯",
+  "Kunkka": "船长",
+  "Lina": "火女",
+  "Lich": "巫妖",
+  "Lion": "莱恩",
+  "Shadow Shaman": "小Y",
+  "Slardar": "大鱼",
+  "Tidehunter": "潮汐",
+  "Witch Doctor": "巫医",
+  "Riki": "隐刺",
+  "Enigma": "谜团",
+  "Tinker": "修补匠",
+  "Sniper": "火枪",
+  "Necrophos": "死灵法",
+  "Warlock": "术士",
+  "Beastmaster": "兽王",
+  "Queen of Pain": "女王",
+  "Venomancer": "剧毒",
+  "Faceless Void": "虚空",
+  "Wraith King": "骷髅王",
+  "Death Prophet": "死亡先知",
+  "Phantom Assassin": "幻影刺客",
+  "Pugna": "骨法",
+  "Templar Assassin": "Ta",
+  "Viper": "毒龙",
+  "Luna": "露娜",
+  "Dragon Knight": "龙骑",
+  "Dazzle": "暗牧",
+  "Clockwerk": "发条",
+  "Leshrac": "拉席克",
+  "Nature's Prophet": "先知",
+  "Lifestealer": "小狗",
+  "Dark Seer": "兔子",
+  "Clinkz": "小骷髅",
+  "Omniknight": "全能",
+  "Enchantress": "小鹿",
+  "Huskar": "哈斯卡",
+  "Night Stalker": "夜魔",
+  "Broodmother": "蜘蛛",
+  "Bounty Hunter": "赏金",
+  "Weaver": "蚂蚁",
+  "Jakiro": "双头龙",
+  "Batrider": "蝙蝠",
+  "Chen": "陈",
+  "Spectre": "幽鬼",
+  "Doom": "末日",
+  "Ancient Apparition": "冰魂",
+  "Ursa": "拍拍",
+  "Spirit Breaker": "白牛",
+  "Gyrocopter": "飞机",
+  "Alchemist": "炼金",
+  "Invoker": "卡尔",
+  "Silencer": "沉默",
+  "Outworld Devourer": "黑鸟",
+  "Lycan": "狼人",
+  "Brewmaster": "熊猫",
+  "Shadow Demon": "毒狗",
+  "Lone Druid": "德鲁伊",
+  "Chaos Knight": "混沌",
+  "Meepo": "米波",
+  "Treant Protector": "大树",
+  "Ogre Magi": "蓝胖",
+  "Undying": "尸王",
+  "Rubick": "拉比克",
+  "Disruptor": "萨尔",
+  "Nyx Assassin": "小强",
+  "Naga Siren": "小娜迦",
+  "Keeper of the Light": "光法",
+  "Io": "小精灵",
+  "Visage": "死灵龙",
+  "Slark": "小鱼人",
+  "Medusa": "大娜迦",
+  "Troll Warlord": "巨魔",
+  "Centaur Warrunner": "人马",
+  "Magnus": "猛犸",
+  "Timbersaw": "伐木机",
+  "Bristleback": "钢背",
+  "Tusk": "海民",
+  "Skywrath Mage": "天怒",
+  "Abaddon": "亚巴顿",
+  "Elder Titan": "大牛",
+  "Legion Commander": "军团",
+  "Ember Spirit": "火猫",
+  "Earth Spirit": "土猫",
+  "Terrorblade": "Tb",
+  "Phoenix": "凤凰",
+  "Oracle": "神谕",
+  "Techies": "炸弹人",
+  "Winter Wyvern": "寒冬飞龙",
+  "Arc Warden": "电狗",
+  "Underlord": "大屁股",
+  "Monkey King": "大圣",
+  "Pangolier": "滚滚",
+  "Dark Willow": "花仙子",
+  "Grimstroke": "墨客",
+  "Mars": "玛尔斯",
+  "Void Spirit": "紫猫",
+  "Snapfire": "老奶奶"
+}
