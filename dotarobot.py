@@ -6,8 +6,10 @@ import json
 import requests
 import datetime
 
-players = {134976802: '白杨', 194765012: '李明昊', 163287641: 'P酱', 137479998: '涛神', 397440385: '亮亮', 144128282: '肥导', 142874459: '冯帆', 135885299: '蛋酱', 189119223: '高远见', 307998042: '头娃', 163338929: '航儿', 139095627: '刘洋'}
-with open("./hero_names.json",'r') as hero_names_f:
+#players = {134976802: '白杨', 194765012: '李明昊', 163287641: 'P酱', 137479998: '涛神', 397440385: '亮亮', 144128282: '肥导', 142874459: '冯帆', 135885299: '蛋酱', 189119223: '高远见', 307998042: '头娃', 163338929: '航儿', 139095627: '刘洋'}
+with open("./players.json", 'r') as f:
+    players = json.load(f)  
+with open("./hero_names.json", 'r') as hero_names_f:
     hero_names = json.load(hero_names_f)
 
 sender = Sender(token='test') #wxclient sending token
